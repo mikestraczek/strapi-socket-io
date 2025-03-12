@@ -1,12 +1,13 @@
+import { Socket } from 'socket.io';
 import getService from '../utils/getService';
 
-async function handshake(socket, next) {
+async function handshake(socket: Socket, next) {
   const strategyService = getService({ name: 'strategies' });
   const auth = socket.handshake.auth || {};
   const token = auth.token || '';
   let strategy = auth.strategy || 'jwt';
 
-  if (!token.length) {
+  if (token.length === 0) {
     strategy = '';
   }
 

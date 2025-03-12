@@ -25,7 +25,7 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
         const query = buildEventQuery({ event });
 
         if (query.filters) {
-          const records = await strapi.entityService.findMany(uid, query);
+          const records = await strapi.documents(uid).findMany(query);
 
           records.forEach((r) => {
             // @ts-ignore
@@ -55,7 +55,7 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
         const query = buildEventQuery({ event });
 
         if (query.filters) {
-          const ids = await strapi.entityService.findMany(uid, query);
+          const ids = await strapi.documents(uid).findMany(query);
           if (!event.state.io) {
             event.state.io = {};
           }
@@ -68,7 +68,7 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
           return;
         }
 
-        const records = await strapi.entityService.findMany(uid, {
+        const records = await strapi.documents(uid).findMany({
           filters: { id: event.state.io.ids },
         });
 
@@ -99,7 +99,7 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
         const query = buildEventQuery({ event });
 
         if (query.filters) {
-          const records = await strapi.entityService.findMany(uid, query);
+          const records = await strapi.documents(uid).findMany(query);
 
           if (!event.state.io) {
             event.state.io = {};

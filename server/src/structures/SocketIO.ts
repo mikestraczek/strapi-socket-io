@@ -19,7 +19,6 @@ class SocketIO {
     this._socket.use(handshake);
   }
 
-  // eslint-disable-next-line no-unused-vars
   async emit({ event, schema, data: rawData }) {
     const sanitizeService = getService({ name: 'sanitize' });
     const strategyService = getService({ name: 'strategies' });
@@ -41,8 +40,6 @@ class SocketIO {
         } catch (error) {
           console.error('error', error);
         }
-
-        console.log('rooms', rooms);
 
         for (const room of rooms) {
           const permissions = room.permissions.map(({ action }) => ({ action }));
@@ -70,9 +67,6 @@ class SocketIO {
 
               const roomName = strategy.getRoomName(room);
               const data = transformService.response({ data: sanitizedData, schema });
-
-              console.log('data', data);
-              console.log('roomName', roomName.replace(' ', '-'));
 
               try {
                 this._socket.to(roomName.replace(' ', '-')).emit(eventName, { ...data });
