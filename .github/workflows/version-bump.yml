@@ -43,7 +43,7 @@ jobs:
         id: changelog
         uses: metcalfc/changelog-generator@v4.3.1
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+          myToken: ${{ secrets.GH_PAT }}
 
       - name: Update CHANGELOG.md
         run: |
