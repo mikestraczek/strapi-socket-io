@@ -38,18 +38,3 @@ jobs:
           bun --bun run npm version ${{ github.event.inputs.version_type }} -m "Bump version to %s"
           git push
           git push --tags
-
-      - name: Generate Changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@v4
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update CHANGELOG.md
-        run: |
-          echo "# Changelog" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "${{ steps.changelog.outputs.changelog }}" >> CHANGELOG.md
-          git add CHANGELOG.md
-          git commit -m "Update CHANGELOG.md"
-          git push
