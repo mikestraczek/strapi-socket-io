@@ -1,0 +1,55 @@
+name: Version Bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Mike Straczek"
+          git config --global user.email "mike.straczek@next-levels.de"
+
+      - name: Bump version
+        run: |
+          bun --bun run npm version ${{ github.event.inputs.version_type }} -m "Bump version to %s"
+          git push
+          git push --tags
+
+      - name: Generate Changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.3.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update CHANGELOG.md
+        run: |
+          echo "# Changelog" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "${{ steps.changelog.outputs.changelog }}" >> CHANGELOG.md
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md"
+          git push

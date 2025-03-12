@@ -19,6 +19,8 @@
     "build": "strapi-plugin build",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
+    "prepublishOnly": "npm run build",
+    "publish:npm": "npm publish --access public",
     "verify": "strapi-plugin verify",
     "test:ts:front": "run -T tsc -p admin/tsconfig.json",
     "test:ts:back": "run -T tsc -p server/tsconfig.json"
