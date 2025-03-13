@@ -35,6 +35,6 @@ jobs:
 
       - name: Bump version
         run: |
-          bun --bun run npm version ${{ github.event.inputs.version_type }} -m "Bump version to %s"
+          bun --bun run npm version ${{ github.event.inputs.version_type }} -m "chore(release): bump version to %s"
           git push
           git push --tags
