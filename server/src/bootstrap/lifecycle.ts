@@ -1,7 +1,7 @@
-import { Core } from '@strapi/strapi';
+import StrapiWithIO from '../types/strapi-with-io';
 import pluginId from '../utils/pluginId';
 
-async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
+async function bootstrapLifecycles({ strapi }: { strapi: StrapiWithIO }) {
   strapi.config.get(`plugin::${pluginId}.contentTypes`, []).forEach((ct) => {
     const uid = ct.uid ? ct.uid : ct;
 
@@ -13,7 +13,6 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
       const eventType = 'create';
 
       subscriber.afterCreate = async (event) => {
-        // @ts-ignore
         strapi.$io.emit({
           event: eventType,
           schema: event.model,
@@ -28,7 +27,6 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
           const records = await strapi.documents(uid).findMany(query);
 
           records.forEach((r) => {
-            // @ts-ignore
             strapi.$io.emit({
               event: eventType,
               schema: event.model,
@@ -43,7 +41,6 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
       const eventType = 'update';
 
       subscriber.afterUpdate = async (event) => {
-        // @ts-ignore
         strapi.$io.emit({
           event: eventType,
           schema: event.model,
@@ -73,7 +70,6 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
         });
 
         records.forEach((r) => {
-          // @ts-ignore
           strapi.$io.emit({
             event: eventType,
             schema: event.model,
@@ -87,7 +83,6 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
       const eventType = 'delete';
 
       subscriber.afterDelete = async (event) => {
-        // @ts-ignore
         strapi.$io.emit({
           event: eventType,
           schema: event.model,
@@ -115,7 +110,6 @@ async function bootstrapLifecycles({ strapi }: { strapi: Core.Strapi }) {
         }
 
         event.state.io.records.forEach((r) => {
-          // @ts-ignore
           strapi.$io.emit({
             event: eventType,
             schema: event.model,

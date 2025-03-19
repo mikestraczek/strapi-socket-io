@@ -1,4 +1,4 @@
-import plugin from './schema';
+import plugin, { Plugin } from './schema';
 
 export default {
   default: {
@@ -8,7 +8,7 @@ export default {
       serverOptions: { cors: { origin: 'http://127.0.0.1:8080', methods: ['GET', 'POST'] } },
     },
   },
-  validator(config) {
+  validator(config: Plugin) {
     return plugin.parse(config);
   },
 };

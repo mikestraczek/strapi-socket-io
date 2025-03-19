@@ -1,14 +1,10 @@
-import { Core } from '@strapi/strapi';
-
 import { Plugin } from '../config/schema';
 import SocketIO from '../structures/SocketIO';
+import StrapiWithIO from '../types/strapi-with-io';
 import pluginId from '../utils/pluginId';
 
-type Strapi = Core.Strapi & { $io: SocketIO };
-
-async function bootstrapIO({ strapi }: { strapi: Strapi }) {
+async function bootstrapIO({ strapi }: { strapi: StrapiWithIO }) {
   const settings: Plugin = strapi.config.get(`plugin::${pluginId}`);
-
   const io = new SocketIO(settings.socket);
 
   strapi.$io = io;
